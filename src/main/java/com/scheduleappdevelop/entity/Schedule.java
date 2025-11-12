@@ -38,7 +38,7 @@ public class Schedule extends BaseTimeEntity {
 //    private LocalDateTime modifiedAt;
 
     // 기본 생성자 (JPA용)
-    public Schedule() {
+    protected Schedule() {
     }
 
     public Schedule(String toDoTitle, String toDoContent, String createdUserName) {
@@ -47,12 +47,10 @@ public class Schedule extends BaseTimeEntity {
         this.createdUserName = createdUserName;
     }
 
+
+    //getter
     public Long getId() {
         return id;
-    }
-
-    public String getCreatedUserName() {
-        return createdUserName;
     }
 
     public String getToDoTitle() {
@@ -61,5 +59,22 @@ public class Schedule extends BaseTimeEntity {
 
     public String getToDoContent() {
         return toDoContent;
+    }
+
+    public String getCreatedUserName() {
+        return createdUserName;
+    }
+
+    //setter
+    public void setToDoTitle(String toDoTitle) {
+        this.toDoTitle = toDoTitle;
+    }
+
+    public void setToDoContent(String toDoContent) {
+        this.toDoContent = toDoContent;
+    }
+
+    public void setCreatedUserName(String createdUserName) {
+        this.createdUserName = createdUserName;
     }
 }

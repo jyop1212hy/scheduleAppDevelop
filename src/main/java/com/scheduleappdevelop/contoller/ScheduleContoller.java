@@ -1,10 +1,12 @@
 package com.scheduleappdevelop.contoller;
 
-import com.scheduleappdevelop.dto.CreateScheduleRequest;
-import com.scheduleappdevelop.dto.CreateScheduleResponse;
+import com.scheduleappdevelop.dto.*;
 import com.scheduleappdevelop.service.ScheduleService;
+import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,7 +20,23 @@ public class ScheduleContoller {
         return scheduleService.createSchedules(contentsSchedule);
     }
 
-    //일정 조회
+    //일정 전체 조회
+    @GetMapping
+    public List<AllScheduleResponse> getAllSchedules() {
+        return scheduleService.allSchedules();
+    }
+    //일전 단건 조회
+    @GetMapping("/{id}")
+    public List<SingleScheduleResponse> getSingleSchedules(@PathVariable Long id) { //입력한 PK 값을 불러온다.
+        return scheduleService.singleSchedules(id);
+    }
+
     //일정 수정
+    @PatchMapping("/{id}")
+    public UpdateScheduleResponse updateSchedule(@PathVariable Long id,
+                                                 @RequestBody UpdateScheduleRequest updateSchedule) { //제이슨 형태의 내용을 불러온다.
+        return scheduleService.UpdateSchedule(id,updateSchedule);
+
+    }
     //일정 삭제
 }
