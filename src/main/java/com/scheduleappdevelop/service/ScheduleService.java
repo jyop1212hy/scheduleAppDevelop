@@ -86,24 +86,35 @@ public class ScheduleService {
 
         if (updateSchedule.getToDoTitle() != null) {
             schedule.setToDoTitle(updateSchedule.getToDoTitle());
-        } if (updateSchedule.getToDoContent() != null) {
+        }
+        if (updateSchedule.getToDoContent() != null) {
             schedule.setToDoContent(updateSchedule.getToDoContent());
-        } if (updateSchedule.getCreatedUserName() != null) {
+        }
+        if (updateSchedule.getCreatedUserName() != null) {
             schedule.setCreatedUserName(updateSchedule.getCreatedUserName());
         }
 
-            //DB저장
-            Schedule savedUpdateSchedules = scheduleRepository.save(schedule);
+        //DB저장
+        Schedule savedUpdateSchedules = scheduleRepository.save(schedule);
 
-            //DB에서 리스폰스로 전달
-            return new UpdateScheduleResponse(
-                    savedUpdateSchedules.getId(),
-                    savedUpdateSchedules.getToDoTitle(),
-                    savedUpdateSchedules.getToDoContent(),
-                    savedUpdateSchedules.getCreatedUserName(),
-                    savedUpdateSchedules.getCreatedAt(),
-                    savedUpdateSchedules.getModifiedAt()
-            );
-        }
+        //DB에서 리스폰스로 전달
+        return new UpdateScheduleResponse(
+                savedUpdateSchedules.getId(),
+                savedUpdateSchedules.getToDoTitle(),
+                savedUpdateSchedules.getToDoContent(),
+                savedUpdateSchedules.getCreatedUserName(),
+                savedUpdateSchedules.getCreatedAt(),
+                savedUpdateSchedules.getModifiedAt()
+        );
     }
+
+    //삭제
+    public void delete(Long id) {
+        scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("삭제할 ID가 없습니다."));
+
+        scheduleRepository.deleteById(id);
+    }
+
+}
 

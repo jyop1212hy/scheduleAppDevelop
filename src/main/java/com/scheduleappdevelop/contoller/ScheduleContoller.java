@@ -2,8 +2,8 @@ package com.scheduleappdevelop.contoller;
 
 import com.scheduleappdevelop.dto.*;
 import com.scheduleappdevelop.service.ScheduleService;
-import jakarta.persistence.Id;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +36,13 @@ public class ScheduleContoller {
     public UpdateScheduleResponse updateSchedule(@PathVariable Long id,
                                                  @RequestBody UpdateScheduleRequest updateSchedule) { //제이슨 형태의 내용을 불러온다.
         return scheduleService.UpdateSchedule(id,updateSchedule);
-
     }
+
     //일정 삭제
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        scheduleService.delete(id);
+        return ResponseEntity.ok("삭제 완료되었습니다.");
+    }
+
 }
