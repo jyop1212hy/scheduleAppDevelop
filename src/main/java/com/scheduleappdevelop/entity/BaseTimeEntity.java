@@ -28,4 +28,5 @@ public class BaseTimeEntity {
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
     }
+
 }

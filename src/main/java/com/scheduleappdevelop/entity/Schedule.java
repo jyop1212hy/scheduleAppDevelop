@@ -16,7 +16,7 @@ public class Schedule extends BaseTimeEntity {
     private Long id;
 
     //작성자명
-    @Column(length = 20, nullable = false) //작성자명 글자수는 20자, 작성자명 칼럼에 값이 없으면 안됨
+    @Column(length = 20, nullable = false,unique = true) //작성자명 글자수는 20자, 작성자명 칼럼에 값이 없으면 안됨, unique = true데이터 베이스 칼럼 열 기준 중복 방지용
     private String createdUserName;
 
     //일정제목
@@ -46,7 +46,6 @@ public class Schedule extends BaseTimeEntity {
         this.toDoContent = toDoContent;
         this.createdUserName = createdUserName;
     }
-
 
     //getter
     public Long getId() {

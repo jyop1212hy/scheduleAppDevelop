@@ -25,6 +25,7 @@ public class ScheduleContoller {
     public List<AllScheduleResponse> getAllSchedules() {
         return scheduleService.allSchedules();
     }
+
     //일전 단건 조회
     @GetMapping("/{id}")
     public List<SingleScheduleResponse> getSingleSchedules(@PathVariable Long id) { //입력한 PK 값을 불러온다.
