@@ -10,14 +10,13 @@ import java.time.LocalDateTime;
 @Table(name = "schedules") // 테이블 이름 지정
 public class Schedule extends BaseTimeEntity {
 
-
     @Id //기본 키값(PK)-주민등록번호
     @GeneratedValue(strategy = GenerationType.IDENTITY) // PK 값을 DB가 자동으로 만듬
     private Long id;
 
-    //작성자명
-    @Column(length = 20, nullable = false,unique = true) //작성자명 글자수는 20자, 작성자명 칼럼에 값이 없으면 안됨, unique = true데이터 베이스 칼럼 열 기준 중복 방지용
-    private String createdUserName;
+//    //작성자명
+//    @Column(length = 20, nullable = false,unique = true) //작성자명 글자수는 20자, 작성자명 칼럼에 값이 없으면 안됨, unique = true데이터 베이스 칼럼 열 기준 중복 방지용
+//    private String createdUserName;
 
     //일정제목
     @Column(length = 100, nullable = false) //제목의 글자수는 50자, 제목칼럼에 값이 없으면 안됨
@@ -26,6 +25,11 @@ public class Schedule extends BaseTimeEntity {
     //일정내용
     @Column(columnDefinition = "TEXT", nullable = false) //일정 내용의 타입은 "TEXT" 타입(클자수가 많음), 제목칼럼에 값이 없으면 안됨
     private String toDoContent;
+
+    //유저 고유식별자 (User FK 가지고옴)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
 //    //일정 생성 시간
 //    @CreatedDate // 생성날짜,시간
@@ -37,43 +41,32 @@ public class Schedule extends BaseTimeEntity {
 //    @Column(nullable = true) // 컬럼을 안써도 되지만 명시적으로 표현하기 위해 작성함
 //    private LocalDateTime modifiedAt;
 
-    // 기본 생성자 (JPA용)
+    //기본 생성자 (JPA용)
     protected Schedule() {
     }
 
-    public Schedule(String toDoTitle, String toDoContent, String createdUserName) {
+    public Schedule(String toDoTitle, String toDoContent, User user) {
         this.toDoTitle = toDoTitle;
         this.toDoContent = toDoContent;
-        this.createdUserName = createdUserName;
+        this.user = user;
     }
+
+    //    public Schedule(String toDoTitle, String toDoContent, String createdUserName) {
+//        this.toDoTitle = toDoTitle;
+//        this.toDoContent = toDoContent;
+//        this.createdUserName = createdUserName;
+//    }
 
     //getter
-    public Long getId() {
-        return id;
-    }
-
-    public String getToDoTitle() {
-        return toDoTitle;
-    }
-
-    public String getToDoContent() {
-        return toDoContent;
-    }
-
-    public String getCreatedUserName() {
-        return createdUserName;
-    }
+    public Long getId() { return id; }
+    public String getToDoTitle() { return toDoTitle; }
+    public String getToDoContent() { return toDoContent; }
+//    public String getCreatedUserName() { return createdUserName; }
+    public User getUser() { return user; }
 
     //setter
-    public void setToDoTitle(String toDoTitle) {
-        this.toDoTitle = toDoTitle;
-    }
-
-    public void setToDoContent(String toDoContent) {
-        this.toDoContent = toDoContent;
-    }
-
-    public void setCreatedUserName(String createdUserName) {
-        this.createdUserName = createdUserName;
-    }
+    public void setToDoTitle(String toDoTitle) { this.toDoTitle = toDoTitle; }
+    public void setToDoContent(String toDoContent) { this.toDoContent = toDoContent; }
+//    public void setCreatedUserName(String createdUserName) { this.createdUserName = createdUserName; }
+    public void setUser(User user) { this.user = user; }
 }

@@ -2,8 +2,10 @@ package com.scheduleappdevelop.service;
 
 import com.scheduleappdevelop.dto.*;
 import com.scheduleappdevelop.entity.Schedule;
+import com.scheduleappdevelop.entity.User;
 import com.scheduleappdevelop.repository.ScheduleRepository;
 
+import com.scheduleappdevelop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,29 +17,35 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
     @Transactional // 메서드매의 모든 로직을 하나라도 실패면 전체 실패로 간주
     //일정 생성
     public CreateScheduleResponse createSchedule(CreateScheduleRequest request) {
 
+        //게시물 작성자가 등록된 유저인지 확인
+        User user = userRepository.findById(request.getUserId()).orElseThrow(()->new IllegalArgumentException("여기가 문제인가?"));
+
         //DTO -> Entity 변환
         Schedule schedule = new Schedule(
                 request.getToDoTitle(),
                 request.getToDoContent(),
-                request.getCreatedUserName()
+//                request.getCreatedUserName()
+                user
         );
 
         //DB 저장
-        Schedule savedSchedule = scheduleRepository.save(schedule);
+        Schedule saved = scheduleRepository.save(schedule);
 
         //DB -> Response에 담기
         return new CreateScheduleResponse(
-                savedSchedule.getId(),
-                savedSchedule.getToDoTitle(),
-                savedSchedule.getToDoContent(),
-                savedSchedule.getCreatedUserName(),
-                savedSchedule.getCreatedAt(),
-                savedSchedule.getModifiedAt()
+                saved.getId(),
+                saved.getToDoTitle(),
+                saved.getToDoContent(),
+//                savedSchedule.getCreatedUserName(),
+                saved.getUser().getId(),
+                saved.getCreatedAt(),
+                saved.getModifiedAt()
         );
     }
 
@@ -52,7 +60,8 @@ public class ScheduleService {
                         schedule.getId(), //
                         schedule.getToDoTitle(),
                         schedule.getToDoContent(),
-                        schedule.getCreatedUserName(),
+//                        schedule.getCreatedUserName(),
+                        schedule.getUser().getId(),
                         schedule.getCreatedAt(),
                         schedule.getModifiedAt()
                 ))
@@ -70,7 +79,8 @@ public class ScheduleService {
                         schedules.getId(), //
                         schedules.getToDoTitle(),
                         schedules.getToDoContent(),
-                        schedules.getCreatedUserName(),
+//                        schedules.getCreatedUserName(),
+                        schedules.getUser().getId(),
                         schedules.getCreatedAt(),
                         schedules.getModifiedAt()
                 ))
@@ -91,9 +101,9 @@ public class ScheduleService {
         if (updateScheduleData.getToDoContent() != null) {
             schedule.setToDoContent(updateScheduleData.getToDoContent());
         }
-        if (updateScheduleData.getCreatedUserName() != null) {
-            schedule.setCreatedUserName(updateScheduleData.getCreatedUserName());
-        }
+//        if (updateScheduleData.getCreatedUserName() != null) {
+//        schedule.setCreatedUserName(updateScheduleData.getCreatedUserName());
+//        }
 
         //DB저장
         Schedule savedUpdateSchedules = scheduleRepository.save(schedule);
@@ -103,7 +113,7 @@ public class ScheduleService {
                 savedUpdateSchedules.getId(),
                 savedUpdateSchedules.getToDoTitle(),
                 savedUpdateSchedules.getToDoContent(),
-                savedUpdateSchedules.getCreatedUserName(),
+                savedUpdateSchedules.getUser().getId(),
                 savedUpdateSchedules.getCreatedAt(),
                 savedUpdateSchedules.getModifiedAt()
         );

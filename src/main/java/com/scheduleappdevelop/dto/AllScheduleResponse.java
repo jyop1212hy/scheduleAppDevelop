@@ -9,40 +9,34 @@ public class AllScheduleResponse {
     private final Long id;
     private final String toDoTitle;
     private final String toDoContent;
-    private final String createdUserName;
+//    private final String createdUserName;
+    private final Long userid;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
-    public AllScheduleResponse(Long id, String toDoTitle, String toDoContent, String createdUserName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+//    public AllScheduleResponse(Long id, String toDoTitle, String toDoContent, String createdUserName, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+//        this.id = id;
+//        this.toDoTitle = toDoTitle;
+//        this.toDoContent = toDoContent;
+//        this.createdUserName = createdUserName;
+//        this.createdAt = createdAt;
+//        this.modifiedAt = modifiedAt;
+//    }
+
+    public AllScheduleResponse(Long id, String toDoTitle, String toDoContent, Long userid, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.toDoTitle = toDoTitle;
         this.toDoContent = toDoContent;
-        this.createdUserName = createdUserName;
+        this.userid = userid;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getToDoTitle() {
-        return toDoTitle;
-    }
-
-    public String getToDoContent() {
-        return toDoContent;
-    }
-
-    public String getCreatedUserName() {
-        return createdUserName;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
+    public Long getId() { return id; }
+    public String getToDoTitle() { return toDoTitle; }
+    public String getToDoContent() { return toDoContent; }
+//    public String getCreatedUserName() { return createdUserName; }
+    public Long getUserid() { return userid; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getModifiedAt() { return modifiedAt; }
 }
