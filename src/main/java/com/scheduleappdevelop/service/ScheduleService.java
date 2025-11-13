@@ -3,9 +3,10 @@ package com.scheduleappdevelop.service;
 import com.scheduleappdevelop.dto.*;
 import com.scheduleappdevelop.entity.Schedule;
 import com.scheduleappdevelop.repository.ScheduleRepository;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ScheduleService {
 
     @Transactional // 메서드매의 모든 로직을 하나라도 실패면 전체 실패로 간주
     //일정 생성
-    public CreateScheduleResponse createSchedules(CreateScheduleRequest request) {
+    public CreateScheduleResponse createSchedule(CreateScheduleRequest request) {
 
         //DTO -> Entity 변환
         Schedule schedule = new Schedule(
@@ -41,8 +42,8 @@ public class ScheduleService {
     }
 
     //일정 전체 조회
-    @Transactional // 메서드매의 모든 로직을 하나라도 실패면 전체 실패로 간주
-    public List<AllScheduleResponse> allSchedules() {
+    @Transactional(readOnly = true) // 메서드매의 모든 로직을 하나라도 실패면 전체 실패로 간주
+    public List<AllScheduleResponse> allSchedule() {
         return scheduleRepository.findAll() //데이터베이스를 전부 찾는다.
                 .stream() //찾은 데이터를 하나씩 스프링으로 가져와라
 
@@ -59,8 +60,8 @@ public class ScheduleService {
     }
 
     //일정 단건 조회
-    @Transactional //메서드매의 모든 로직을 하나라도 실패면 전체 실패로 간주
-    public List<SingleScheduleResponse> singleSchedules(Long id) {
+    @Transactional(readOnly = true) //메서드매의 모든 로직을 하나라도 실패면 전체 실패로 간주
+    public List<SingleScheduleResponse> singleSchedule(Long id) {
         return scheduleRepository.findById(id) //데이터베이스를 전부 찾는다.
                 .stream() //찾은 데이터를 하나씩 스프링으로 가져와라
 
@@ -77,21 +78,21 @@ public class ScheduleService {
     }
 
     //일정 수정
-    @Transactional // 메서드매의 모든 로직을 하나라도 실패면 전체 실패로 간주
-    public UpdateScheduleResponse UpdateSchedule(Long id, UpdateScheduleRequest updateSchedule) {
+   @Transactional // 메서드매의 모든 로직을 하나라도 실패면 전체 실패로 간주
+    public UpdateScheduleResponse UpdateSchedule(Long id, UpdateScheduleRequest updateScheduleData) {
 
         //수정해야할 조회 아이디가 아예 없으면??
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일정이 없습니다."));
 
-        if (updateSchedule.getToDoTitle() != null) {
-            schedule.setToDoTitle(updateSchedule.getToDoTitle());
+        if (updateScheduleData.getToDoTitle() != null) {
+            schedule.setToDoTitle(updateScheduleData.getToDoTitle());
         }
-        if (updateSchedule.getToDoContent() != null) {
-            schedule.setToDoContent(updateSchedule.getToDoContent());
+        if (updateScheduleData.getToDoContent() != null) {
+            schedule.setToDoContent(updateScheduleData.getToDoContent());
         }
-        if (updateSchedule.getCreatedUserName() != null) {
-            schedule.setCreatedUserName(updateSchedule.getCreatedUserName());
+        if (updateScheduleData.getCreatedUserName() != null) {
+            schedule.setCreatedUserName(updateScheduleData.getCreatedUserName());
         }
 
         //DB저장
@@ -109,6 +110,7 @@ public class ScheduleService {
     }
 
     //삭제
+    @Transactional
     public void delete(Long id) {
         scheduleRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("삭제할 ID가 없습니다."));

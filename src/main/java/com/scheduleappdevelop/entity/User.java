@@ -11,11 +11,13 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     //작성자명
-    @Column(length = 50, nullable = false,unique = true) //작성자명 글자수는 50자, 칼럼에 값이 없으면 안됨, unique = true데이터 베이스 칼럼 열 기준 중복 방지용
+    @Column(length = 50, nullable = false, unique = true)
+    //작성자명 글자수는 50자, 칼럼에 값이 없으면 안됨, unique = true데이터 베이스 칼럼 열 기준 중복 방지용
     private String name;
 
     //유저 이메일
-    @Column(length = 70, nullable = false,unique = true) //이메일 글자수는 70자, 칼럼에 값이 없으면 안됨, unique = true데이터 베이스 칼럼 열 기준 중복 방지용
+    @Column(length = 70, nullable = false, unique = true)
+    //이메일 글자수는 70자, 칼럼에 값이 없으면 안됨, unique = true데이터 베이스 칼럼 열 기준 중복 방지용
     private String email;
 
     //유저 비밀번호
@@ -49,4 +51,16 @@ public class User extends BaseTimeEntity {
         return password;
     }
 
+    //Setter
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

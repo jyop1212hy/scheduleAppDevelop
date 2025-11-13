@@ -17,19 +17,19 @@ public class ScheduleContoller {
     //일정 생성
     @PostMapping
     public CreateScheduleResponse createSchedule(@RequestBody CreateScheduleRequest contentsSchedule) {
-        return scheduleService.createSchedules(contentsSchedule);
+        return scheduleService.createSchedule(contentsSchedule);
     }
 
     //일정 전체 조회
     @GetMapping
     public List<AllScheduleResponse> getAllSchedules() {
-        return scheduleService.allSchedules();
+        return scheduleService.allSchedule();
     }
 
     //일전 단건 조회
     @GetMapping("/{id}")
     public List<SingleScheduleResponse> getSingleSchedules(@PathVariable Long id) { //입력한 PK 값을 불러온다.
-        return scheduleService.singleSchedules(id);
+        return scheduleService.singleSchedule(id);
     }
 
     //일정 수정
@@ -43,7 +43,7 @@ public class ScheduleContoller {
     @DeleteMapping("{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){
         scheduleService.delete(id);
-        return ResponseEntity.ok("삭제 완료되었습니다.");
+        return ResponseEntity.ok("선택하신 일정이 삭제 완료되었습니다.");
     }
 
 }
