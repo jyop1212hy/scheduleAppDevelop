@@ -15,10 +15,9 @@ public class UserController {
 
     private final UserService userService;
 
-    //유저 생성
+    //유저 생성 -> 회원가입
     @PostMapping
-    public CreateUserResponse createUser(
-            @RequestBody CreateUserRequest request) {
+    public CreateUserResponse createUser(@RequestBody CreateUserRequest request) {
         return userService.createUser(request);
     }
 

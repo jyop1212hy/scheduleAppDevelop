@@ -32,12 +32,7 @@
 ---
 
 ## 🧠 ERD (예시)
-
-```
-<img src="./images/CalendarAppDevelopERDImages.png" width="500">
-```
-
-![ERD](./images/CalendarAppDevelopERDImages.png)
+![CalendarAppDevelopERDImages.png](docs/images/CalendarAppDevelopERDImages.png)
 
 ---
 

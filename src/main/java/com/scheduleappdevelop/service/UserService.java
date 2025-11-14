@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor //초기화 되지 않은 final 필드나, @NonNull이 붙은 필드에 대해 생성자를 생성해준다.
@@ -15,9 +16,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    //생성
+    //회원가입
     @Transactional
     public CreateUserResponse createUser(CreateUserRequest request) {
+
+        //ifPresent()는 Optional 객체가 값을 가지고 있으면 실행 값이 없으면 넘어감
+        userRepository.findByEmail(request.getEmail())
+              .ifPresent(user -> {
+                  throw new IllegalArgumentException("이미 사용중인 이메일 주소 입니다.");
+              });
 
         //DTO -> 엔터티
         User user = new User(
@@ -103,7 +110,6 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.findById(id).orElse(null);
 //                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
-
         userRepository.deleteById(id);
     }
 }
