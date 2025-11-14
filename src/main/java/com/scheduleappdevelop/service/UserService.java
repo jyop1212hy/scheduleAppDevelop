@@ -3,12 +3,13 @@ package com.scheduleappdevelop.service;
 import com.scheduleappdevelop.dto.*;
 import com.scheduleappdevelop.entity.User;
 import com.scheduleappdevelop.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor //초기화 되지 않은 final 필드나, @NonNull이 붙은 필드에 대해 생성자를 생성해준다.
@@ -112,4 +113,21 @@ public class UserService {
 //                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
         userRepository.deleteById(id);
     }
+
+    //로그인
+    @Transactional
+    public User login(LoginRequest request) {
+
+        //데이터 베이스에 이메일 대조
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일 주소 입니다."));
+        //비밀번호 대조
+        if (!request.getPassword().equals(request.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+        }
+
+        //로그인 성공
+        return user;
+    }
+
 }

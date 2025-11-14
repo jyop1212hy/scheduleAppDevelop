@@ -1,7 +1,9 @@
-package com.scheduleappdevelop.contoller;
+package com.scheduleappdevelop.controller;
 
 import com.scheduleappdevelop.dto.*;
+import com.scheduleappdevelop.entity.User;
 import com.scheduleappdevelop.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,10 +43,32 @@ public class UserController {
             @RequestBody UpdateUserRequest request) {
         return userService.updateUser(id, request);
     }
+
     //유저 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok("선택하신 유저가 삭제 완료되었습니다.");
     }
+
+    //로그인
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> logln( @Valid @RequestBody LoginRequest request, HttpSession session){
+
+        //로그인 검증
+        User user = userService.login(request);
+
+        //세션 생성 및 저장
+        session.setAttribute("loginUser", user.getId());
+
+        //로그인 성공후 본인 데이터 돌려보내주면서 확인시켜주기
+        LoginResponse response = new LoginResponse(
+                user.getId(),
+                user.getEmail()
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+
 }

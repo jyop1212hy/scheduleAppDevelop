@@ -1,18 +1,16 @@
 package com.scheduleappdevelop.dto;
 
-public class CreateUserRequest {
-    private final String name;
+public class LoginRequest {
+
     private final String email;
     private final String password;
 
-    public CreateUserRequest(String name, String email, String password) {
-        this.name = name;
+    public LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
     //Getter
-    public String getName() { return name; }
     public String getEmail() { return email; }
     public String getPassword() { return password; }
 }
