@@ -2,6 +2,7 @@ package com.scheduleappdevelop.controller;
 
 import com.scheduleappdevelop.dto.*;
 import com.scheduleappdevelop.service.ScheduleService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,11 @@ public class ScheduleController {
 
     //일정 생성
     @PostMapping
-    public CreateScheduleResponse createSchedule(@RequestBody CreateScheduleRequest contentsSchedule) {
+    public CreateScheduleResponse createSchedule(@RequestBody CreateScheduleRequest contentsSchedule, HttpSession session) {
+        Long userId = (Long) session.getAttribute("loginUser");
+        if (userId == null) {
+            throw new IllegalArgumentException("로그인 후 이용 가능한 서비스입니다.");
+        }
         return scheduleService.createSchedule(contentsSchedule);
     }
 

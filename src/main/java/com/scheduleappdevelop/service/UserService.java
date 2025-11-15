@@ -107,6 +107,7 @@ public class UserService {
         );
     }
 
+    //삭제
     @Transactional
     public void deleteUser(Long id) {
         userRepository.findById(id).orElse(null);
@@ -123,7 +124,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일 주소 입니다."));
         //비밀번호 대조
         if (!request.getPassword().equals(request.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+            throw new IllegalArgumentException("입력한 비밀번호가 존재하지 않습니다.");
         }
 
         //로그인 성공

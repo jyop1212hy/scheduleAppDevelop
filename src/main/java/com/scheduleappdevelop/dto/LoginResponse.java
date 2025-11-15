@@ -1,8 +1,8 @@
 package com.scheduleappdevelop.dto;
 
 public class LoginResponse {
-    private Long userId;
-    private String email;
+    private final Long userId;
+    private final String email;
 
     public LoginResponse(Long userId, String email) {
         this.userId = userId;
