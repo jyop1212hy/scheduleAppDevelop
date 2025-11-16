@@ -2,9 +2,11 @@ package com.scheduleappdevelop.service;
 
 import com.scheduleappdevelop.dto.*;
 import com.scheduleappdevelop.entity.User;
+import com.scheduleappdevelop.exception.ServerException;
 import com.scheduleappdevelop.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +26,7 @@ public class UserService {
         //ifPresent()는 Optional 객체가 값을 가지고 있으면 실행 값이 없으면 넘어감
         userRepository.findByEmail(request.getEmail())
               .ifPresent(user -> {
-                  throw new IllegalArgumentException("이미 사용중인 이메일 주소 입니다.");
+                  throw new ServerException(HttpStatus.CONFLICT, "이메일이 틀렸습니다.");
               });
 
         //DTO -> 엔터티
@@ -68,8 +70,8 @@ public class UserService {
 //        Optional<User> optionalUserUser = userRepository.findById(id); //값이 있을수도 있고 없을수도 있으니 없나면 Optional<T>로 Null을 보내준다.
 //        User user = optionalUserUser.get();
 
-        User user = userRepository.findById(id).orElse(null);
-//                .orElseThrow(() -> new IllegalArgumentException("해당 ID는 없는 유저 입니다.")); //ID 조회후 예외 처리까지 완료
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ServerException(HttpStatus.NOT_FOUND,"해당 ID는 없는 유저 입니다.")); //ID 조회후 예외 처리까지 완료
 
         return new SingleUserResponse(
                 user.getId(),
@@ -84,7 +86,8 @@ public class UserService {
     @Transactional
     public UpdateUserResponse updateUser(Long id, UpdateUserRequest request) {
         //데이터베이스에 있는 아디이 인지 조회
-        User user = userRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ServerException(HttpStatus.NOT_FOUND,"해당 ID는 없는 유저 입니다."));
 
         //입력한 데이터가 엎어씌울수 있는지 확인
         if (request.getName() != null) {
@@ -110,8 +113,8 @@ public class UserService {
     //삭제
     @Transactional
     public void deleteUser(Long id) {
-        userRepository.findById(id).orElse(null);
-//                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+        userRepository.findById(id)
+                .orElseThrow(() -> new ServerException(HttpStatus.NOT_FOUND,"해당 ID는 없는 유저 입니다."));
         userRepository.deleteById(id);
     }
 
@@ -121,10 +124,11 @@ public class UserService {
 
         //데이터 베이스에 이메일 대조
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일 주소 입니다."));
+                .orElseThrow(() -> new ServerException(HttpStatus.CONFLICT,"가입되지 않은 이메일입니다."));
+
         //비밀번호 대조
         if (!user.getPassword().equals(request.getPassword())) {
-            throw new IllegalArgumentException("입력한 비밀번호가 존재하지 않습니다.");
+            throw new ServerException(HttpStatus.UNAUTHORIZED,"입력한 비밀번호가 존재하지 않습니다.");
         }
 
         //로그인 성공
