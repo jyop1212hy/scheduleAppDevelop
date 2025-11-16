@@ -21,10 +21,11 @@ public class ScheduleService {
 
     @Transactional // 메서드매의 모든 로직을 하나라도 실패면 전체 실패로 간주
     //일정 생성
-    public CreateScheduleResponse createSchedule(CreateScheduleRequest request) {
+    public CreateScheduleResponse createSchedule(CreateScheduleRequest request, Long userId) {
 
         //게시물 작성자가 등록된 유저인지 확인
-        User user = userRepository.findById(request.getUserId()).orElseThrow(()->new IllegalArgumentException("여기가 문제인가?"));
+        User user = userRepository.findById(request.getUserId()).orElseThrow(
+                ()->new IllegalArgumentException("유효하지 않은 사용자입니다."));
 
         //DTO -> Entity 변환
         Schedule schedule = new Schedule(

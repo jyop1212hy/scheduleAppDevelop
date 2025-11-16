@@ -22,7 +22,7 @@ public class ScheduleController {
         if (userId == null) {
             throw new IllegalArgumentException("로그인 후 이용 가능한 서비스입니다.");
         }
-        return scheduleService.createSchedule(contentsSchedule);
+        return scheduleService.createSchedule(contentsSchedule, userId);
     }
 
     //일정 전체 조회

@@ -123,7 +123,7 @@ public class UserService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일 주소 입니다."));
         //비밀번호 대조
-        if (!request.getPassword().equals(request.getPassword())) {
+        if (!user.getPassword().equals(request.getPassword())) {
             throw new IllegalArgumentException("입력한 비밀번호가 존재하지 않습니다.");
         }
 
