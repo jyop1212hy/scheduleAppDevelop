@@ -13,8 +13,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ServerException.class)
     public ResponseEntity<String> handleServerException(ServerException ex) {
         return ResponseEntity
-                .status(ex.getStatus())  // ← 서비스가 던진 status 사용!
-                .body(ex.getMessage());
+                .status(ex.getStatus())  // 서버익셉션이 들고온 상태 코드
+                .body(ex.getMessage()); // 서버익셉션이 들고온 메시지
     }
 
     // NullPointerException 같은 예상치 못한 오류 → 500
